@@ -19,6 +19,7 @@ class SchedItem:
     link=''
     pass
 
+#unfort. 118 use javascript to update match table.
 def fetch_sched_118(url = 'http://data.188score.com/season/match/5620-2.html'):
     ret = []
     content = urllib2.urlopen(url).read()
@@ -43,7 +44,52 @@ def fetch_sched_118(url = 'http://data.188score.com/season/match/5620-2.html'):
 
     return ret
 
+def fetch_sched_500(url = 'http://liansai.500.com/cupindex-seasonid-2396', 
+        baseUrl = 'http://liansai.500.com/'):
+    #1. find a select named 'season_list' and use the first option's value
+    #   as a new url ..500.com/cupindex-seasonid-XXXX 
+    #2. find a iframe named 'fra' and navigate into the src url.
+    #3. a table.
+    content = urllib2.urlopen(url).read()
+    soup = BeautifulSoup(content, from_encoding="GB18030")
+    #1.
+    select = soup.find(id = 'season_list')
+    seasonid = select.contents[0]['value']
+    print 'the newest seasonid:' + seasonid
+    newUrl = baseUrl + 'cupindex-seasonid-' + seasonid
+    if url != newUrl :
+        print 'redirect to newer season, url:' + newUrl
+        content = urllib2.urlopen(newUrl).read()
+        soup = BeautifulSoup(content, from_encoding="GB18030")
+    #2.
+    iframe = soup.find(id = 'fra')
+    fra_src = iframe['src']
+    newUrl = baseUrl + fra_src
+    print 'redirect to iframe (which contains the match table):'
+    print newUrl
+    content = urllib2.urlopen(newUrl).read()
+    soup = BeautifulSoup(content, from_encoding="GB18030")
+    #3.
+    trs = [tr for tr in soup.find_all('tr') if 'tr04' in tr['class'] or 'tr03' in tr['class'] ]
+    print 'match tr(table row) detected: ' + str(len(trs))
+    ret = []
+    for tr in trs:
+        #print tr.contents[1].string
+        #print ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
+        item = SchedItem()
+        item.hostTeam = tr.contents[3].contents[0].string
+        item.visitTeam = tr.contents[7].contents[0].string
+        strtime = ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
+        #print item.hostTeam
+        #print item.visitTeam
+        #print strtime
+        dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
+        item.startTime = str(int(mktime(dt.timetuple()))) + '000'
+        item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
+        item.title = dt.strftime("%m-%d ") + item.hostTeam + 'vs' + item.visitTeam
+        ret.append(item)
 
+    return ret
 
 def fetch_sched_zgzcw(url = 'http://www.zgzcw.com/saicheng/yijia.htm'):
     ret = []
@@ -73,4 +119,8 @@ def fetch_sched_zgzcw(url = 'http://www.zgzcw.com/saicheng/yijia.htm'):
 
     return ret
 
-fetch_sched_118()
+#fetch_sched_118()
+#print "TEST 1"
+#print fetch_sched_500()
+#print "TEST 2"
+#print fetch_sched_500(url = 'http://liansai.500.com/cupindex.php?seasonid=1189')
