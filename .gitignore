@@ -33,3 +33,13 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+clubwick/.DS_Store
+
+*.swp
+*.vimfiles.*
+*.sh
+wdigest/posts/*
+*.vimentry
+*.html
+
