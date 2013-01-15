@@ -39,7 +39,7 @@ def fetch_sched_118(url = 'http://data.188score.com/season/match/5620-2.html'):
         dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
         item.startTime = str(int(mktime(dt.timetuple()))) + '000'
         item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
-        item.title = dt.strftime("%m-%d ") + item.hostTeam + 'vs' + item.visitTeam
+        item.title = item.hostTeam + 'vs' + item.visitTeam
         ret.append()
 
     return ret
@@ -86,7 +86,7 @@ def fetch_sched_500(url = 'http://liansai.500.com/cupindex-seasonid-2396',
         dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
         item.startTime = str(int(mktime(dt.timetuple()))) + '000'
         item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
-        item.title = dt.strftime("%m-%d ") + item.hostTeam + 'vs' + item.visitTeam
+        item.title = item.hostTeam + 'vs' + item.visitTeam
         ret.append(item)
 
     return ret
@@ -113,7 +113,7 @@ def fetch_sched_zgzcw(url = 'http://www.zgzcw.com/saicheng/yijia.htm'):
             dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
             item.startTime = str(int(mktime(dt.timetuple()))) + '000'
             item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
-            item.title = dt.strftime("%m-%d ") + item.hostTeam + 'vs' + item.visitTeam
+            item.title = item.hostTeam + 'vs' + item.visitTeam
             #print item.title
             ret.append(item)
 
