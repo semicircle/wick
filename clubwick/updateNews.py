@@ -52,14 +52,14 @@ def update_news(postfix_url='d5400t13v19', club='ce2_club_acm'):
 
 update_news('d5413t13v19', 'ce2_club_manu')
 update_news('d5400t13v19', 'ce2_club_acm')
-update_news('d5399t13v19', 'ce2_club_int')
-update_news('d5411t13v19', 'ce2_club_juv')
+#update_news('d5399t13v19', 'ce2_club_int')
+#update_news('d5411t13v19', 'ce2_club_juv')
 #update_news('d5417t13v19', 'ce2_club_manc')
-update_news('d5415t13v19', 'ce2_club_che')
-update_news('d5414t13v19', 'ce2_club_ars')
+#update_news('d5415t13v19', 'ce2_club_che')
+#update_news('d5414t13v19', 'ce2_club_ars')
 update_news('d5416t13v19', 'ce2_club_liv')
-update_news('d11651t13v19', 'ce2_club_rma')
-update_news('d11652t13v19', 'ce2_club_bar')
+#update_news('d11651t13v19', 'ce2_club_rma')
+#update_news('d11652t13v19', 'ce2_club_bar')
 
 
 
