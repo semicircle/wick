@@ -15,8 +15,8 @@ class SinaNewsParser(HTMLParser.HTMLParser):
         newsList = []
     def handle_starttag(self, tag, attrs):
         if ('a' == tag):
-            print 'starttag a:'
-            print attrs
+            #print 'starttag a:'
+            #print attrs
             self.isInTagA = True
             for attr in attrs:
                 if (attr[0] == 'href'):
@@ -27,7 +27,7 @@ class SinaNewsParser(HTMLParser.HTMLParser):
         pass
     def handle_endtag(self, tag):
         if ('a' == tag):
-            print 'endtag a'
+            #print 'endtag a'
             self.isInTagA = False
             if (None != self.prog.search(self.currLink)):
                 self.newsList.append((self.currTitle, self.currLink))
@@ -35,7 +35,7 @@ class SinaNewsParser(HTMLParser.HTMLParser):
         pass
     def handle_data(self, data):
         if (self.isInTagA):
-            print data
+            #print data
             self.currTitle = data
         pass
     pass
@@ -47,10 +47,7 @@ def fetch_news(club='d5400t13v19'):
     parser.newsList = []
     parser.feed(content)
     parser.close()
-    print '======== newsList result ========='
-    for item in parser.newsList:
-        print item[0]
-        print item[1]
+    #print '======== newsList result ========='
     return parser.newsList
 
 #fetch_news()

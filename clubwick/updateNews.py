@@ -23,8 +23,9 @@ def update_news(postfix_url='d5400t13v19', club='ce2_club_acm'):
         return
     time.sleep(2)
     #return
-    print "Start AddNews"
+    print "Start AddNews: " + str(len(newslist))
     for item in newslist:
+        print "prepare updating: " + item[0]
         encpyLink = urllib.quote(item[1])
         conn = httplib.HTTPConnection(target_server)
         params = urllib.urlencode({
