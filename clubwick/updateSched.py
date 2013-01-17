@@ -83,7 +83,7 @@ def add_sched_list(prefix, schedlist, club, pattern):
             print rsp.status, rsp.reason
             break
         else:
-            print "updating: " + item.title
+            print "updating: " + item.title.encode('utf-8')
         pass
     pass
 
@@ -112,7 +112,7 @@ def update_club_sched(club, pattern, leagueList):
         elif 'zgzcw.com' in league.url:
             fetch = fetchSched.fetch_sched_zgzcw
         else:
-            print 'Invalid URL: ' + league.url
+            print 'Invalid URL: ' + league.url.encode('utf-8')
         toExtend = fetch(league.url)
         if toExtend != None and len(toExtend) != 0:
             for item in toExtend:
