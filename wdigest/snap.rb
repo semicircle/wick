@@ -22,8 +22,10 @@ if !token.validated?
     exit
 end
 
+postpath = ARGV[0]
+
 #2. open file ./posts/last to find the latest weibo id.%
-latest = IO.read './posts/latest'
+latest = IO.read '%s/latest' % postpath
 
 #puts latest
 
@@ -31,12 +33,14 @@ posts = client.statuses.home_timeline ({:since_id => latest, :count => 100})
 
 posts[:statuses].each do | post | 
     #puts post.to_json
-    IO.write './posts/%d' % post[:id], post.to_json
+    #IO.write '#{postpath}/%d' % post[:id], post.to_json
+    thepath = File.join(postpath, post[:id].to_s)
+    IO.write thepath, post.to_json
 end
 
 latest = posts[:statuses][0][:id].to_s
 
-IO.write './posts/latest', latest
+IO.write '%s/latest' % postpath, latest
 
 puts 'snap: get %d posts, lastest id: %s' % [posts[:statuses].length , latest]
 
