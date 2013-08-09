@@ -29,7 +29,7 @@ CLUB_MANU='ce2_club_manu'
 CLUB_LIV='ce2_club_liv'
 #pattern
 PATTERN_ACM=u'AC米兰'
-PATTERN_MANU=u'曼彻斯特联'
+PATTERN_MANU= [ u'曼彻斯特联', u'曼联']
 PATTERN_LIV=u'利物浦'
 
 class League:
@@ -61,7 +61,9 @@ def clean_sched(club):
 
 def add_sched_list(prefix, schedlist, club, pattern):
     for item in schedlist:
-        if ((item.hostTeam != pattern) and (item.visitTeam != pattern)):
+        if ((type(pattern) != list) and (item.hostTeam != pattern) and (item.visitTeam != pattern)):
+            continue
+        if ((type(pattern) == list) and (item.hostTeam not in pattern) and (item.visitTeam not in pattern)):
             continue
         conn = httplib.HTTPConnection(target_server)
         #print item.startTime
@@ -154,8 +156,8 @@ def do_test_update():
 def do_real_update():
 
     update_club_sched(CLUB_MANU, PATTERN_MANU, Common_Eng) 
-    update_club_sched(CLUB_ACM, PATTERN_ACM, Common_Ita) 
-    update_club_sched(CLUB_LIV, PATTERN_LIV, Common_Eng)
+#    update_club_sched(CLUB_ACM, PATTERN_ACM, Common_Ita) 
+#    update_club_sched(CLUB_LIV, PATTERN_LIV, Common_Eng)
 
     pass
 
