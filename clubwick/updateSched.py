@@ -156,8 +156,8 @@ def do_test_update():
 def do_real_update():
 
     update_club_sched(CLUB_MANU, PATTERN_MANU, Common_Eng) 
-#    update_club_sched(CLUB_ACM, PATTERN_ACM, Common_Ita) 
-#    update_club_sched(CLUB_LIV, PATTERN_LIV, Common_Eng)
+    update_club_sched(CLUB_ACM, PATTERN_ACM, Common_Ita) 
+    update_club_sched(CLUB_LIV, PATTERN_LIV, Common_Eng)
 
     pass
 
