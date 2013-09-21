@@ -49,6 +49,7 @@ def fetch_sched_500(url = 'http://liansai.500.com/cupindex-seasonid-2396',
     #1. find a select named 'season_list' and use the first option's value
     #   as a new url ..500.com/cupindex-seasonid-XXXX 
     #2. find a iframe named 'fra' and navigate into the src url.
+    #2.5. //2013-09-20: cup_group.php, dame.
     #3. a table.
     content = urllib2.urlopen(url).read()
     soup = BeautifulSoup(content, from_encoding="GB18030")
@@ -69,25 +70,47 @@ def fetch_sched_500(url = 'http://liansai.500.com/cupindex-seasonid-2396',
     print newUrl
     content = urllib2.urlopen(newUrl).read()
     soup = BeautifulSoup(content, from_encoding="GB18030")
-    #3.
-    trs = [tr for tr in soup.find_all('tr') if 'tr04' in tr['class'] or 'tr03' in tr['class'] ]
-    print 'match tr(table row) detected: ' + str(len(trs))
+
+    #2.5
+    cup_groups = [link for link in soup.find_all('a') if link['href'].startswith('cup_group') ]
+
     ret = []
-    for tr in trs:
-        #print tr.contents[1].string
-        #print ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
-        item = SchedItem()
-        item.hostTeam = tr.contents[3].contents[0].string
-        item.visitTeam = tr.contents[7].contents[0].string
-        strtime = ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
-        #print item.hostTeam
-        #print item.visitTeam
-        #print strtime
-        dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
-        item.startTime = str(int(mktime(dt.timetuple()))) + '000'
-        item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
-        item.title = item.hostTeam + 'vs' + item.visitTeam
-        ret.append(item)
+
+    for group in cup_groups:
+        print "GROUP URL:" + group['href']
+        content = urllib2.urlopen("http://liansai.500.com/" + group['href']).read()
+        soup = BeautifulSoup(content, from_encoding="GB18030")
+
+        #3.
+        trs = [tr for tr in soup.find_all('tr') if 'tr04' in tr['class'] or 'tr03' in tr['class'] ]
+        print 'match tr(table row) detected: ' + str(len(trs))
+        
+        for tr in trs:
+            #print tr.contents[1].string
+            #print ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
+            if len(tr.contents) == 1:
+                continue
+            item = SchedItem()
+            strtime = ' '.join([slice for slice in tr.contents[1].children if slice.string != None])
+            print "strtime:" + strtime
+            try :
+                dt = datetime.strptime(strtime, "%Y-%m-%d %H:%M:%S")
+            except(ValueError):
+                continue
+            #print tr
+            item.hostTeam = tr.contents[3].contents[0].string
+            item.visitTeam = tr.contents[7].contents[0].string
+            
+            #print item.hostTeam
+            #print item.visitTeam
+            #print strtime
+            #print tr
+           
+            item.startTime = str(int(mktime(dt.timetuple()))) + '000'
+            item.endTime = str(int(mktime(dt.timetuple())) + 6000) + '000'
+            item.title = item.hostTeam + 'vs' + item.visitTeam
+            ret.append(item)
+        pass
 
     return ret
 
